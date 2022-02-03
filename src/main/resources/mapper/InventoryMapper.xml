@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.javaguides.springboot.springboothelloworldtutorial.mapper.InventoryMapper">
+    <resultMap id="inventoryMap" type="inventory" autoMapping="true">
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, item_name, item_count, stocked_at,updated_at
+    </sql>
+    <select id="getAll" resultMap="inventoryMap">
+        select
+        <include refid="Base_Column_List"/>
+        from inventories
+    </select>
+
+    <!--Save Inventory-->
+    <insert id="saveInventory"  useGeneratedKeys="true" keyProperty="id" parameterType="inventory">
+        insert into inventories(item_count,stocked_at,item_name, updated_at)  values(#{item_count},#{stocked_at},#{item_name},NOW())
+    </insert>
+
+    <!--adopt Id delete inventory-->
+    <delete id="deleteInventoryById" parameterType="int">
+       delete from inventories where id =#{id}
+    </delete>
+
+    <!--Update this inventory information-->
+    <update id="updateInventory">
+       update inventories set item_count = #{item_count},stocked_at =  #{stocked_at},item_name =  #{item_name}
+       where id = #{id}
+    </update>
+
+</mapper>

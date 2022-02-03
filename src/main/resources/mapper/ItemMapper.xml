@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.javaguides.springboot.springboothelloworldtutorial.mapper.ItemMapper">
+    <resultMap id="itemMap" type="item" >
+        <id column="id" property="id" javaType="java.lang.Integer" jdbcType="BIGINT" />
+        <result column="name" property="item_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--Query all-->
+<!--    <select id="getAll" resultType="item">-->
+<!--        select * from items-->
+<!--    </select>-->
+<!--    <resultMap id="itemMap"  type="net.javaguides.springboot.springboothelloworldtutorial.mapper.ItemMapper" >-->
+<!--        <id column="id" property="id" />-->
+<!--        <result column="name" property="name" />-->
+<!--    </resultMap>-->
+
+    <!--Query all-->
+    <select id="getAll" resultMap="itemMap">
+        select id,count from calender
+    </select>
+
+    <!--Save Item-->
+    <insert id="saveItem"  useGeneratedKeys="true" keyProperty="id">
+        insert into item(name,password)  values(#{name},#{password})
+    </insert>
+
+    <!--adopt Id delete item-->
+    <delete id="deleteItemById">
+       delete from item where id =#{id}
+    </delete>
+
+    <!--Update this item information-->
+    <update id="updateItem">
+       update item set name = #{name},password =  #{password}
+       where id = #{id}
+    </update>
+
+</mapper>

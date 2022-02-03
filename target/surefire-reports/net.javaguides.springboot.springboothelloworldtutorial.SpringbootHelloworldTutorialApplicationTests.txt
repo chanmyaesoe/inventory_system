@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: net.javaguides.springboot.springboothelloworldtutorial.SpringbootHelloworldTutorialApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 12.856 s <<< FAILURE! - in net.javaguides.springboot.springboothelloworldtutorial.SpringbootHelloworldTutorialApplicationTests
+contextLoads  Time elapsed: 0.029 s  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: java.lang.IllegalStateException: Failed to execute CommandLineRunner
+Caused by: org.mybatis.spring.MyBatisSystemException: nested exception is org.apache.ibatis.reflection.ReflectionException: There is no getter for property named 'emailId' in 'class net.javaguides.springboot.springboothelloworldtutorial.entity.Employee'
+Caused by: org.apache.ibatis.reflection.ReflectionException: There is no getter for property named 'emailId' in 'class net.javaguides.springboot.springboothelloworldtutorial.entity.Employee'
+

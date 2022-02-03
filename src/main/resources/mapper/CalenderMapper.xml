@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.javaguides.springboot.springboothelloworldtutorial.mapper.CalenderMapper">
+    <resultMap id="calenderMap" type="calender" autoMapping="true">
+
+    </resultMap>
+
+    <resultMap id="employeeResultMap" type="Employee">
+        <id column = "id" jdbcType = "BIGINT" property = "id"/>
+        <result column = "first_name" jdbcType = "VARCHAR" property = "first_name"/>
+        <result column = "last_name" jdbcType = "VARCHAR" property = "last_name"/>
+        <result column = "email" jdbcType = "VARCHAR" property = "email"/>
+    </resultMap>
+
+    <resultMap id="inventoryResultMap" type="Inventory">
+        <id column = "id" jdbcType = "BIGINT" property = "id"/>
+        <result column = "item_name" jdbcType = "VARCHAR" property = "item_name"/>
+        <result column = "item_count" jdbcType = "VARCHAR" property = "item_count"/>
+        <result column = "stocked_at" jdbcType = "TIMESTAMP" property = "stocked_at"/>
+    </resultMap>
+
+    <select id="selectCalender" resultType="CalenderEmployee">
+        select calender.id ,calender.employee_id, calender.count,calender.inventory_id,calender.datetime,
+        employee.first_name,employee.last_name,inventory.item_name,inventory.item_count
+        from calenders calender left join employees employee on employee.id = calender.employee_id
+        left join inventories inventory on inventory.id = calender.inventory_id
+
+    </select>
+
+
+    <insert id="saveCalender"  useGeneratedKeys="true" keyProperty="id" parameterType="calender">
+        insert into calenders(count,employee_id,inventory_id,datetime)  values(#{count},#{employee_id},#{inventory_id},NOW())
+    </insert>
+
+    <update id="updateCalender">
+       update calenders set employee_id = #{employee_id},inventory_id =  #{inventory_id},count =  #{count}
+       where id = #{id}
+    </update>
+
+    <!--adopt Id delete inventory-->
+    <delete id="deleteCalenderById" parameterType="int">
+       delete from inventories where id =#{id}
+    </delete>
+</mapper>
