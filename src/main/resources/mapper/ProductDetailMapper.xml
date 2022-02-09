@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.javaguides.springboot.springboothelloworldtutorial.mapper.ProductDetailMapper">
+    <resultMap id="productDetailMap" type="productDetail" autoMapping="true">
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, product_id, new_count,price,updated_at
+    </sql>
+    <select id="getAll" resultType="ProductDetailParent">
+        select productDetail.id, productDetail.product_id, productDetail.new_count, productDetail.remaining_count,
+        productDetail.price,productDetail.updated_at,product.product_name
+        from product_details productDetail left join products product on product.id = productDetail.product_id
+    </select>
+<!--    <resultMap id="productDetailMap" type="ProductDetail">-->
+<!--        <result property="id" column="id"/>-->
+<!--        <result property="product_id" column="product_id"/>-->
+<!--        <result property="new_count" column="new_count"/>-->
+<!--        <association property="product" column="product_id" javaType="Product">-->
+<!--            <id property="id" column="id"/>-->
+<!--            <result property="product_name" column="product_name"/>-->
+<!--        </association>-->
+<!--    </resultMap>-->
+
+<!--    <select id="getAll" parameterType="int" resultMap="productDetailMap">-->
+<!--      select productDetail.id, productDetail.product_id, productDetail.new_count, product.id, product.product_name-->
+<!--       from product_details productDetail left join products product on product.id = productDetail.product_id-->
+<!--        </select>-->
+
+        <!--Save ProductDetail-->
+    <insert id="saveProductDetail"  useGeneratedKeys="true" keyProperty="id" parameterType="product">
+        insert into product_details(product_id,price,new_count, updated_at,created_at)  values(#{product_id},#{price},#{new_count},NOW(),NOW())
+    </insert>
+
+
+    <!--adopt Id delete product detail-->
+    <delete id="deleteProductDetailById" parameterType="int">
+       delete from product_details where id =#{id}
+    </delete>
+
+    <!--Update this product detail information-->
+    <update id="updateProduct">
+       update products set current_count = current_count + #{new_count},last_stocked_at =  NOW()
+       where id = #{product_id}
+    </update>
+
+    <!--Update this product detail information-->
+    <update id="updateProductDetail">
+       update product_details set current_count = #{current_count},stocked_at =  #{stocked_at},product_name =  #{product_name}
+       where id = #{id}
+    </update>
+
+
+
+</mapper>

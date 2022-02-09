@@ -1,1 +1,1 @@
-# inventory_system
+# product_system

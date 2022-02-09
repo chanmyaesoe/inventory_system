@@ -3,7 +3,7 @@
 <mapper namespace="net.javaguides.springboot.springboothelloworldtutorial.mapper.ItemMapper">
     <resultMap id="itemMap" type="item" >
         <id column="id" property="id" javaType="java.lang.Integer" jdbcType="BIGINT" />
-        <result column="name" property="item_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="name" property="product_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--Query all-->

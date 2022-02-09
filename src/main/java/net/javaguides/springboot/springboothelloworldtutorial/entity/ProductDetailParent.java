@@ -7,10 +7,6 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CalenderEmployee extends Calender {
-
-    private String first_name;
-    private String last_name;
+public class ProductDetailParent extends ProductDetail{
     private String product_name;
-    private Integer current_count;
 }

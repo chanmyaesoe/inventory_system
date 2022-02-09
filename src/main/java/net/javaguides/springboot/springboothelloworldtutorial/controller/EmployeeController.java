@@ -2,7 +2,7 @@ package net.javaguides.springboot.springboothelloworldtutorial.controller;
 
 import net.javaguides.springboot.springboothelloworldtutorial.entity.Calender;
 import net.javaguides.springboot.springboothelloworldtutorial.entity.Employee;
-import net.javaguides.springboot.springboothelloworldtutorial.entity.Inventory;
+import net.javaguides.springboot.springboothelloworldtutorial.entity.Product;
 import net.javaguides.springboot.springboothelloworldtutorial.service.impl.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

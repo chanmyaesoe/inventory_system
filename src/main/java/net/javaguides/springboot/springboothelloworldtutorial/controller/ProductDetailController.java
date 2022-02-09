@@ -1,7 +1,9 @@
 package net.javaguides.springboot.springboothelloworldtutorial.controller;
 
-import net.javaguides.springboot.springboothelloworldtutorial.entity.Inventory;
-import net.javaguides.springboot.springboothelloworldtutorial.service.impl.InventoryService;
+import net.javaguides.springboot.springboothelloworldtutorial.entity.Product;
+import net.javaguides.springboot.springboothelloworldtutorial.entity.ProductDetail;
+import net.javaguides.springboot.springboothelloworldtutorial.entity.ProductDetailParent;
+import net.javaguides.springboot.springboothelloworldtutorial.service.impl.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
@@ -25,69 +27,76 @@ import org.supercsv.prefs.CsvPreference;
 @SpringBootApplication
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api")
-public class InventoryController {
+public class ProductDetailController {
 
     @Autowired
-    private InventoryService inventoryService;
+    private ProductDetailService productDetailService;
 
-    @GetMapping("/inventories")
-    public List<Inventory> getAllInventory() { //get all data
-        List<Inventory> list = inventoryService.getAllInventory();
+    @GetMapping("/product-details")
+    public List<ProductDetailParent> getAllProductDetail() { //get all data
+        List<ProductDetailParent> list = productDetailService.getAllProductDetail();
         return list;
     }
 
-    @PostMapping("/inventories")
-    public ResponseEntity<Object> saveInventory(Inventory inventory) { // create data
+    @PostMapping("/product-details")
+    public ResponseEntity<Object> saveProduct(ProductDetail productDetail) { // create data
         try {
-            Inventory _tutorial = inventoryService.saveInventory(inventory);
+            ProductDetail _productDetail = productDetailService.saveProductDetail(productDetail);
+            ProductDetail _product = productDetailService.updateProduct(productDetail);
             return ResponseHandler.generateResponse("Successfully added data!", HttpStatus.OK, null);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 
-    @PutMapping("/inventories/{id}")
-    public ResponseEntity<Object> updateInventory(Inventory inventory) { // update data
+    @PutMapping("/product-details/{id}")
+    public ResponseEntity<Object> updateProduct(ProductDetail productDetail) { // update data
         try {
-            Inventory _inventory = inventoryService.updateInventory(inventory);
+            ProductDetail _productDetail = productDetailService.updateProductDetail(productDetail);
             return ResponseHandler.generateResponse("Successfully update data!", HttpStatus.OK, null);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 
-    @DeleteMapping("/inventories/{id}")
-    public ResponseEntity<Object> deleteInventoryById(@PathVariable("id") int id) { // delete data
+    @DeleteMapping("/product-details/{id}")
+    public ResponseEntity<Object> deleteProductById(@PathVariable("id") int id) { // delete data
         try {
-            Inventory _inventory = inventoryService.deleteInventoryById(id);
+            ProductDetail _productDetail = productDetailService.deleteProductDetailById(id);
             return ResponseHandler.generateResponse("Successfully delete data!", HttpStatus.OK, null);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 
-    @GetMapping("/inventories/export")
+    @GetMapping("/product-details/export")
     public void exportToCSV(HttpServletResponse response) throws IOException { // export data
         response.setContentType("text/csv");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String currentDateTime = dateFormatter.format(new Date());
 
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=inventories_" + currentDateTime + ".csv";
+        String headerValue = "attachment; filename=products_" + currentDateTime + ".csv";
         response.setHeader(headerKey, headerValue);
 
-        List<Inventory> listUsers = inventoryService.getAllInventory();
+        List<ProductDetailParent> listUsers = productDetailService.getAllProductDetail();
 
         ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
         String[] csvHeader = {"item Name", "Item Count", "Stocked At", "Updated At"};
-        String[] nameMapping = {"item_name","item_count","stocked_at","updated_at"};
+        String[] nameMapping = {"product_name","current_count","stocked_at","updated_at"};
 
         csvWriter.writeHeader(csvHeader);
 
-        for (Inventory inventory : listUsers) {
-            csvWriter.write(inventory, nameMapping);
+        for (ProductDetail productDetail : listUsers) {
+            csvWriter.write(productDetail, nameMapping);
         }
         csvWriter.close();
     }
+
+//    @GetMapping("/productsCount")
+//    public List<ProductDetail> reportCurrentTime() {
+//        List<ProductDetail> list = productDetailService.getAllProductDetail();
+//        return list;
+//    }
 
 }

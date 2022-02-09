@@ -1,10 +1,8 @@
 package net.javaguides.springboot.springboothelloworldtutorial.controller;
 
-import net.javaguides.springboot.springboothelloworldtutorial.entity.Calender;
-import net.javaguides.springboot.springboothelloworldtutorial.entity.CalenderEmployee;
-import net.javaguides.springboot.springboothelloworldtutorial.entity.Employee;
-import net.javaguides.springboot.springboothelloworldtutorial.entity.Inventory;
+import net.javaguides.springboot.springboothelloworldtutorial.entity.*;
 import net.javaguides.springboot.springboothelloworldtutorial.service.impl.CalenderService;
+import net.javaguides.springboot.springboothelloworldtutorial.service.impl.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
@@ -16,6 +14,7 @@ import org.supercsv.prefs.CsvPreference;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,6 +28,8 @@ public class CalenderController {
 
         @Autowired
         private CalenderService calenderService;
+        private ProductService productService;
+        static Long prod = 1L;
 
         @GetMapping("/calenders")
         public List<CalenderEmployee> getAllCalender() { //get All Data
@@ -36,10 +37,17 @@ public class CalenderController {
             return list;
         }
 
+        @PostMapping("/calenders-by-date")
+        public List<CalenderEmployee> getCalenderByDate(Timestamp date, @RequestParam(defaultValue = "") Timestamp to) { //get All Data
+            List<CalenderEmployee> list = calenderService.getCalenderByDate(date,to);
+            return list;
+        }
+
         @PostMapping("/calenders")
-        public ResponseEntity<Object> saveCalender(Calender calender) { // create data
+        public ResponseEntity<Object> saveCalender(Calender calender) { // create calender
             try {
-                Inventory _calender = calenderService.saveCalender(calender);
+                Calender _calender = calenderService.saveCalender(calender);
+                Product _product = calenderService.updateCount(calender.getProduct_id(), calender.getCount()); // update the remaining count of products
                 return ResponseHandler.generateResponse("Successfully added data!", HttpStatus.OK, null);
             } catch (Exception e) {
                 return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
@@ -47,9 +55,9 @@ public class CalenderController {
         }
 
         @PutMapping("/calenders/{id}")
-        public ResponseEntity<Object> updateCalender(Calender calender) { //update data
+        public ResponseEntity<Object> updateCalender(Calender calender) { //update calender
             try {
-                Inventory _calender = calenderService.updateCalender(calender);
+                Calender _calender = calenderService.updateCalender(calender);
                 return ResponseHandler.generateResponse("Successfully updated  data!", HttpStatus.OK, null);
             } catch (Exception e) {
                 return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
@@ -59,15 +67,15 @@ public class CalenderController {
         @RequestMapping("/deleteCalenderById")
         public ResponseEntity<Object> deleteCalenderById(Long id) { //delete data
             try {
-                Inventory _calender = calenderService.deleteCalenderById(id);
+                Calender _calender = calenderService.deleteCalenderById(id);
                 return ResponseHandler.generateResponse("Successfully deleted data!", HttpStatus.OK, null);
             } catch (Exception e) {
                 return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
             }
         }
 
-        @GetMapping("/calenders/export") //export data
-        public void exportToCSV(HttpServletResponse response) throws IOException {
+        @PostMapping("/calenders/export") //export data
+        public void exportToCSV(HttpServletResponse response,Timestamp from,Timestamp to) throws IOException {
             response.setContentType("text/csv");
             DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
             String currentDateTime = dateFormatter.format(new Date());
@@ -76,7 +84,7 @@ public class CalenderController {
             String headerValue = "attachment; filename=calenders_" + currentDateTime + ".csv";
             response.setHeader(headerKey, headerValue);
 
-            List<CalenderEmployee> lists = calenderService.getAllCalender();
+            List<CalenderEmployee> lists = calenderService.getCalenderByDate(from,to);
 
             ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
             String[] csvHeader = {"count","first name", "datetime"};

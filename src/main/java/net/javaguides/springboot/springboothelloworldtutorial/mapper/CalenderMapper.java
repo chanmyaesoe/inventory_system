@@ -5,6 +5,7 @@ import net.javaguides.springboot.springboothelloworldtutorial.entity.CalenderEmp
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -16,4 +17,9 @@ public interface CalenderMapper {
     public void updateCalender(Calender calender);
 
     public void deleteCalenderById(Long id);
+
+    public List<CalenderEmployee> selectCalenderByDate(Timestamp date, Timestamp to);
+
+    public  void  updateCount(Long product_id, Integer count);
+
 }

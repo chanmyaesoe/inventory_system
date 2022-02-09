@@ -37,14 +37,14 @@ public class Calender implements Serializable {
     private Long employee_id;//The id of the employee corresponding to the calender
 //    private Employee employee;
 
-//    private Long inventory_id;
-//    private Inventory inventory;
+//    private Long product_id;
+//    private Product product;
 
-    private Long inventory_id;
-//    private Inventory inventory;
+    private Long product_id;
+//    private Product product;
 
     @Column(nullable = false)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",  timezone = "Asia/Manila")
     private Timestamp datetime;
 
 }
