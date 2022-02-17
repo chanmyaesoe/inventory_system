@@ -15,9 +15,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeMapper employeeMapper;
 
     @Override
-    public List<Employee> getAllEmployee() {
-        List<Employee> list = employeeMapper.getAll();
+    public List<Employee> getAllEmployee(Integer pageNum, Integer pageSize) {
+        List<Employee> list = employeeMapper.getAll(pageNum, pageSize);
         return list;
+    }
+
+    @Override
+    public Employee getCount() {
+        Employee totalCount  = employeeMapper.getCount();
+        return totalCount;
     }
 
     @Override

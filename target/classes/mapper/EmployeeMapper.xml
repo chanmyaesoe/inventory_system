@@ -12,19 +12,29 @@
     <sql id="Base_Column_List">
         id, first_name, last_name, email
     </sql>
+
     <!--Query all-->
     <select id="getAll" resultType="employee">
         select
         <include refid="Base_Column_List"/>
         from employees
+        <if test="pageSize != 0">
+            limit #{pageNum}, #{pageSize}
+        </if>
     </select>
+
+    <!--Query Count-->
+    <select id="getCount" resultType="Employee">
+        select count(id) as id from employees
+    </select>
+
 
     <!--Save Employee-->
     <insert id="saveEmployee"  useGeneratedKeys="true" keyProperty="id" parameterType="employee">
         insert into employees(email,first_name,last_name)  values(#{email},#{first_name},#{last_name})
     </insert>
 
-    <!--adopt Id delete employee-->
+    <!--delete Id delete employee-->
     <delete id="deleteEmployeeById">
        delete from employees where id =#{id}
     </delete>

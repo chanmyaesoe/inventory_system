@@ -8,11 +8,13 @@ import java.util.List;
 
 @Mapper
 public interface EmployeeMapper {
-    public List<Employee> getAll();
+    public List<Employee> getAll(Integer pageNum, Integer pageSize);
 
     public void saveEmployee(Employee employee);
 
     public void deleteEmployeeById(Integer id);
 
     public void updateEmployee(Employee employee);
+
+    public  Employee getCount();
 }

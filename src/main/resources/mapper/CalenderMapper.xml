@@ -22,12 +22,14 @@
     </resultMap>
 
     <!--select for inventory data-->
-    <select id="selectCalender" resultType="CalenderEmployee">
+    <select id="getAll" resultType="CalenderEmployee">
         select calender.id ,calender.employee_id, calender.count,calender.product_id,calender.datetime,
         employee.first_name,employee.last_name,product.product_name,product.current_count
         from calenders calender left join employees employee on employee.id = calender.employee_id
         left join products product on product.id = calender.product_id order by calender.id
-
+        <if test="pageSize != 0">
+            limit #{pageNum}, #{pageSize}
+        </if>
     </select>
 
     <!--Select inventory by date-->
@@ -63,4 +65,9 @@
     <delete id="deleteCalenderById" parameterType="int">
        delete from products where id =#{id}
     </delete>
+
+    <!-- Query Count-->
+    <select id="getCount" resultType="Calender">
+        select count(id) as id from calenders
+    </select>
 </mapper>

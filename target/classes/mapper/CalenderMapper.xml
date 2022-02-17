@@ -5,6 +5,7 @@
 
     </resultMap>
 
+    <!-- Employee Data-->
     <resultMap id="employeeResultMap" type="Employee">
         <id column = "id" jdbcType = "BIGINT" property = "id"/>
         <result column = "first_name" jdbcType = "VARCHAR" property = "first_name"/>
@@ -12,6 +13,7 @@
         <result column = "email" jdbcType = "VARCHAR" property = "email"/>
     </resultMap>
 
+    <!--Product ProductDetail-->
     <resultMap id="productResultMap" type="Product">
         <id column = "id" jdbcType = "BIGINT" property = "id"/>
         <result column = "product_name" jdbcType = "VARCHAR" property = "product_name"/>
@@ -19,14 +21,18 @@
         <result column = "stocked_at" jdbcType = "TIMESTAMP" property = "stocked_at"/>
     </resultMap>
 
-    <select id="selectCalender" resultType="CalenderEmployee">
+    <!--select for inventory data-->
+    <select id="getAll" resultType="CalenderEmployee">
         select calender.id ,calender.employee_id, calender.count,calender.product_id,calender.datetime,
         employee.first_name,employee.last_name,product.product_name,product.current_count
         from calenders calender left join employees employee on employee.id = calender.employee_id
         left join products product on product.id = calender.product_id order by calender.id
-
+        <if test="pageSize != 0">
+            limit #{pageNum}, #{pageSize}
+        </if>
     </select>
 
+    <!--Select inventory by date-->
     <select id="selectCalenderByDate" resultType="CalenderEmployee" parameterType="java.util.Date">
         select calender.id ,calender.employee_id, calender.count,calender.product_id,calender.datetime,
         employee.first_name,employee.last_name,product.product_name,product.current_count
@@ -37,23 +43,31 @@
     </select>
 
 
+    <!--Save Inventory-->
     <insert id="saveCalender"  useGeneratedKeys="true" keyProperty="id" parameterType="calender">
         insert into calenders(count,employee_id,product_id,datetime)  values(#{count},#{employee_id},#{product_id},NOW())
 
     </insert>
-    <!--Update this product information-->
+
+    <!--Update this product remaining count-->
     <update id="updateCount">
        update products set current_count = current_count - #{count}
        where id = #{product_id}
     </update>
 
+    <!--Update Inventory-->
     <update id="updateCalender">
        update calenders set employee_id =  #{employee_id},count =  #{count},product_id =  #{product_id}
        where id = #{id}
     </update>
 
-    <!--adopt Id delete product-->
+    <!-- Delete Inventory By Id-->
     <delete id="deleteCalenderById" parameterType="int">
        delete from products where id =#{id}
     </delete>
+
+    <!-- Query Count-->
+    <select id="getCount" resultType="Calender">
+        select count(id) as id from calenders
+    </select>
 </mapper>

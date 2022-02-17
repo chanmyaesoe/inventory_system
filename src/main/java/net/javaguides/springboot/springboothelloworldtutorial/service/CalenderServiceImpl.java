@@ -2,6 +2,7 @@ package net.javaguides.springboot.springboothelloworldtutorial.service;
 
 import net.javaguides.springboot.springboothelloworldtutorial.entity.Calender;
 import net.javaguides.springboot.springboothelloworldtutorial.entity.CalenderEmployee;
+import net.javaguides.springboot.springboothelloworldtutorial.entity.Employee;
 import net.javaguides.springboot.springboothelloworldtutorial.entity.Product;
 import net.javaguides.springboot.springboothelloworldtutorial.mapper.CalenderMapper;
 import net.javaguides.springboot.springboothelloworldtutorial.service.impl.CalenderService;
@@ -18,8 +19,8 @@ public class CalenderServiceImpl implements CalenderService {
     private CalenderMapper calenderMapper;
 
     @Override
-    public List<CalenderEmployee> getAllCalender() {
-        List<CalenderEmployee> list = calenderMapper.selectCalender();
+    public List<CalenderEmployee> getAllCalender(Integer pageNum, Integer pageSize) {
+        List<CalenderEmployee> list = calenderMapper.getAll(pageNum, pageSize);
         return list;
     }
     @Override
@@ -49,5 +50,11 @@ public class CalenderServiceImpl implements CalenderService {
     public Calender updateCalender(Calender calender) {
         calenderMapper.updateCalender(calender);
         return null;
+    }
+
+    @Override
+    public Calender getCount() {
+        Calender totalCount  = calenderMapper.getCount();
+        return totalCount;
     }
 }

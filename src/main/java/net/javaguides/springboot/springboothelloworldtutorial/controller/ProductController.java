@@ -1,5 +1,6 @@
 package net.javaguides.springboot.springboothelloworldtutorial.controller;
 
+import net.javaguides.springboot.springboothelloworldtutorial.entity.Employee;
 import net.javaguides.springboot.springboothelloworldtutorial.entity.Product;
 import net.javaguides.springboot.springboothelloworldtutorial.service.impl.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,12 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public List<Product> getAllProduct() { //get all data
-        List<Product> list = productService.getAllProduct();
-        return list;
+    public ResponseEntity<Object> getAllProduct(@RequestParam(defaultValue  = "0") Integer pageNum ,@RequestParam(defaultValue  = "0") Integer pageSize) { //get all data
+        List<Product> list = productService.getAllProduct(((pageNum -1) * pageSize), pageSize);
+        Product count = productService.getCount();
+        Map<String, Long> pageInfo = new HashMap<String, Long>();
+        pageInfo.put("pageSize", count.getId());
+        return ResponseHandler.generateResponse("Success", HttpStatus.OK, list, pageInfo);
     }
 
     @PostMapping("/products")
@@ -76,7 +80,7 @@ public class ProductController {
         String headerValue = "attachment; filename=products_" + currentDateTime + ".csv";
         response.setHeader(headerKey, headerValue);
 
-        List<Product> listUsers = productService.getAllProduct();
+        List<Product> listUsers = productService.getAllProduct(0,100);
 
         ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
         String[] csvHeader = {"item Name", "Item Count", "Stocked At", "Updated At"};

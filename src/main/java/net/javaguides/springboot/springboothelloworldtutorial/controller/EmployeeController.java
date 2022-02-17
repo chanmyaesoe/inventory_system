@@ -10,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @SpringBootApplication
@@ -22,9 +25,13 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping("/employees")
-    public List<Employee> getAllEmployee() { // gel all data
-        List<Employee> list = employeeService.getAllEmployee();
-        return list;
+    @ResponseBody
+    public ResponseEntity<Object>  getAllEmployee(@RequestParam(defaultValue  = "0") Integer pageNum ,@RequestParam(defaultValue  = "0") Integer pageSize) { // gel all data
+        List<Employee> list = employeeService.getAllEmployee(((pageNum -1) * pageSize), pageSize);
+        Employee count = employeeService.getCount();
+        Map<String, Long> pageInfo = new HashMap<String, Long>();
+        pageInfo.put("pageSize", count.getId());
+        return ResponseHandler.generateResponse("Success", HttpStatus.OK, list, pageInfo);
     }
 
     @PostMapping("/employees")

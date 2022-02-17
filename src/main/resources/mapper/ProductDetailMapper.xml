@@ -10,6 +10,9 @@
         select productDetail.id, productDetail.product_id, productDetail.new_count, productDetail.remaining_count,
         productDetail.price,productDetail.updated_at,product.product_name
         from product_details productDetail left join products product on product.id = productDetail.product_id
+        <if test="pageSize != 0">
+            limit #{pageNum}, #{pageSize}
+        </if>
     </select>
 <!--    <resultMap id="productDetailMap" type="ProductDetail">-->
 <!--        <result property="id" column="id"/>-->
@@ -49,6 +52,9 @@
        where id = #{id}
     </update>
 
-
+    <!-- Query Count-->
+    <select id="getCount" resultType="ProductDetailParent">
+        select count(id) as id from product_details
+    </select>
 
 </mapper>

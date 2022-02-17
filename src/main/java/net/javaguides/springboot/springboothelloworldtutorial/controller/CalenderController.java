@@ -18,7 +18,9 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @SpringBootApplication
@@ -32,9 +34,12 @@ public class CalenderController {
         static Long prod = 1L;
 
         @GetMapping("/calenders")
-        public List<CalenderEmployee> getAllCalender() { //get All Data
-            List<CalenderEmployee> list = calenderService.getAllCalender();
-            return list;
+        public ResponseEntity<Object> getAllCalender(@RequestParam(defaultValue  = "0") Integer pageNum ,@RequestParam(defaultValue  = "0") Integer pageSize) { //get All Data
+            List<CalenderEmployee> list = calenderService.getAllCalender(((pageNum -1) * pageSize), pageSize);
+            Calender count = calenderService.getCount();
+            Map<String, Long> pageInfo = new HashMap<String, Long>();
+            pageInfo.put("pageSize", count.getId());
+            return ResponseHandler.generateResponse("success", HttpStatus.OK, list, pageInfo);
         }
 
         @PostMapping("/calenders-by-date")
@@ -58,6 +63,7 @@ public class CalenderController {
         public ResponseEntity<Object> updateCalender(Calender calender) { //update calender
             try {
                 Calender _calender = calenderService.updateCalender(calender);
+                Product _product = calenderService.updateCount(calender.getProduct_id(), calender.getCount());
                 return ResponseHandler.generateResponse("Successfully updated  data!", HttpStatus.OK, null);
             } catch (Exception e) {
                 return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);

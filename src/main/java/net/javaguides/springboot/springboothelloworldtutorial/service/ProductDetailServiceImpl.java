@@ -1,5 +1,6 @@
 package net.javaguides.springboot.springboothelloworldtutorial.service;
 
+import net.javaguides.springboot.springboothelloworldtutorial.entity.Calender;
 import net.javaguides.springboot.springboothelloworldtutorial.entity.ProductDetail;
 import net.javaguides.springboot.springboothelloworldtutorial.entity.ProductDetailParent;
 import net.javaguides.springboot.springboothelloworldtutorial.mapper.ProductDetailMapper;
@@ -15,8 +16,8 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     private ProductDetailMapper productDetailMapper;
 
     @Override
-    public List<ProductDetailParent> getAllProductDetail() {
-        List<ProductDetailParent> list = productDetailMapper.getAll();
+    public List<ProductDetailParent> getAllProductDetail(Integer pageNum, Integer pageSize) {
+        List<ProductDetailParent> list = productDetailMapper.getAll(pageNum, pageSize);
         return list;
     }
 
@@ -48,5 +49,11 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     public List<ProductDetail> selectProductDetailByCount() {
         List<ProductDetail> list = productDetailMapper.selectByCount();
         return list;
+    }
+
+    @Override
+    public ProductDetail getCount() {
+        ProductDetail totalCount  = productDetailMapper.getCount();
+        return totalCount;
     }
 }

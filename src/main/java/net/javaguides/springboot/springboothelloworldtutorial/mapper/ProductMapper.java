@@ -1,5 +1,6 @@
 package net.javaguides.springboot.springboothelloworldtutorial.mapper;
 
+import net.javaguides.springboot.springboothelloworldtutorial.entity.Calender;
 import net.javaguides.springboot.springboothelloworldtutorial.entity.Product;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -10,7 +11,7 @@ import java.util.Set;
 
 @Mapper
 public interface ProductMapper {
-    public List<Product> getAll();
+    public List<Product> getAll(Integer pageNum, Integer pageSize);
 
     public void saveProduct(Product product);
 
@@ -21,4 +22,6 @@ public interface ProductMapper {
     public void deleteProductById(@PathVariable("id") Integer id);
 
     public List<Product> selectByCount();
+
+    public Product getCount();
 }

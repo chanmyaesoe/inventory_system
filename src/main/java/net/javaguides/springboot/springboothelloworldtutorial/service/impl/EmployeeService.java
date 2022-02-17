@@ -6,9 +6,10 @@ import java.util.List;
 
 public interface EmployeeService {
 
-    public List<Employee> getAllEmployee();
+    public List<Employee> getAllEmployee(Integer pageNum, Integer pageSize);
     public Employee saveEmployee(Employee employee);
     public Employee deleteEmployeeById(Integer id);
     public Employee updateEmployee(Employee employee);
+    public Employee getCount();
 
 }

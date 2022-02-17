@@ -1,5 +1,6 @@
 package net.javaguides.springboot.springboothelloworldtutorial.controller;
 
+import net.javaguides.springboot.springboothelloworldtutorial.entity.Employee;
 import net.javaguides.springboot.springboothelloworldtutorial.entity.Product;
 import net.javaguides.springboot.springboothelloworldtutorial.entity.ProductDetail;
 import net.javaguides.springboot.springboothelloworldtutorial.entity.ProductDetailParent;
@@ -33,9 +34,12 @@ public class ProductDetailController {
     private ProductDetailService productDetailService;
 
     @GetMapping("/product-details")
-    public List<ProductDetailParent> getAllProductDetail() { //get all data
-        List<ProductDetailParent> list = productDetailService.getAllProductDetail();
-        return list;
+    public ResponseEntity<Object> getAllProductDetail(@RequestParam(defaultValue  = "0") Integer pageNum ,@RequestParam(defaultValue  = "0") Integer pageSize) { //get all data
+        List<ProductDetailParent> list = productDetailService.getAllProductDetail(((pageNum -1) * pageSize), pageSize);
+        ProductDetail count = productDetailService.getCount();
+        Map<String, Long> pageInfo = new HashMap<String, Long>();
+        pageInfo.put("pageSize", count.getId());
+        return ResponseHandler.generateResponse("Success", HttpStatus.OK, list, pageInfo);
     }
 
     @PostMapping("/product-details")
@@ -79,7 +83,7 @@ public class ProductDetailController {
         String headerValue = "attachment; filename=products_" + currentDateTime + ".csv";
         response.setHeader(headerKey, headerValue);
 
-        List<ProductDetailParent> listUsers = productDetailService.getAllProductDetail();
+        List<ProductDetailParent> listUsers = productDetailService.getAllProductDetail(0,10);
 
         ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
         String[] csvHeader = {"item Name", "Item Count", "Stocked At", "Updated At"};

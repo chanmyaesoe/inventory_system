@@ -1,6 +1,7 @@
 package net.javaguides.springboot.springboothelloworldtutorial.service;
 
 import net.javaguides.springboot.springboothelloworldtutorial.entity.Product;
+import net.javaguides.springboot.springboothelloworldtutorial.entity.ProductDetail;
 import net.javaguides.springboot.springboothelloworldtutorial.mapper.ProductMapper;
 import net.javaguides.springboot.springboothelloworldtutorial.service.impl.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
 
     @Override
-    public List<Product> getAllProduct() {
-        List<Product> list = productMapper.getAll();
+    public List<Product> getAllProduct(Integer pageNum, Integer pageSize) {
+        List<Product> list = productMapper.getAll(pageNum, pageSize);
         return list;
     }
 
@@ -45,5 +46,11 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> selectProductByCount() {
         List<Product> list = productMapper.selectByCount();
         return list;
+    }
+
+    @Override
+    public Product getCount() {
+        Product totalCount  = productMapper.getCount();
+        return totalCount;
     }
 }
