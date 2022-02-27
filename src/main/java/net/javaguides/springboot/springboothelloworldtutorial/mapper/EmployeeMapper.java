@@ -3,6 +3,7 @@ package net.javaguides.springboot.springboothelloworldtutorial.mapper;
 import net.javaguides.springboot.springboothelloworldtutorial.entity.Employee;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 

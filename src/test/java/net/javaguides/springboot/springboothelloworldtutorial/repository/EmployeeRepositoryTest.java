@@ -1,6 +1,7 @@
 package net.javaguides.springboot.springboothelloworldtutorial.repository;
 
 import net.javaguides.springboot.springboothelloworldtutorial.entity.Employee;
+import net.javaguides.springboot.springboothelloworldtutorial.mapper.EmployeeMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.jupiter.api.MethodOrderer;
@@ -21,14 +22,14 @@ import java.util.Optional;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EmployeeRepositoryTest {
 
-//    @Autowired
-//    private EmployeeRepository employeeRepository;
+    @Autowired
+    private EmployeeMapper employeeRepository;
 //
 //
-//    @Test
-//    public void firstTest() {
-//        Assert.assertTrue(true);
-//    }
+    @Test
+    public void firstTest() {
+        Assert.assertTrue(true);
+    }
 //
 ////     JUnit test for saveEmployee
 //    @Test
